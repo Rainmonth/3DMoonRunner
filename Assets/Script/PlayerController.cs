@@ -1,72 +1,119 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
-
-public class PlayerController : MonoBehaviour {
-
+/// <summary>
+///  游戏角色控制器类，负责管理角色的动作和状态
+/// </summary>
+public class PlayerController : MonoBehaviour
+{
+    // 角色移动速度
     public float speed = 1;
-    public float init_speed=5;
+    // 角色初始速度
+    public float init_speed = 5;
+    // 角色最大速度
     private float maxSpeed = 20;
+    // 输入方向
     InputDirection inputDirection;
+    // 鼠标位置
     Vector3 mousePos;
+    // 输入是否激活
     bool activeInput;
+    // 站立位置
     Position standPosition;
+    // 来自的位置
     Position fromPosition;
+    // x轴移动方向
     Vector3 xDirection;
+    // 移动方向
     Vector3 moveDirection;
+    // 角色控制器组件
     CharacterController characterController;
+    // 是否滚动
     public bool isRoll = false;
+    // 跳跃加速度
     float jumpValue = 7;
+    // 重力加速度
     float gravity = 20;
+    // 是否允许双跳
     public bool canDoubleJump = true;
+    // 是否已经双跳
     bool doubleJump = false;
+    // 是否快速移动
     bool isQuickMoving = false;
+    // 保存的移动速度
     float saveSpeed;
+    // 快速移动持续时间
     float quickMoveDuration = 3;
+    // 快速移动剩余时间
     public float quickMoveTimeLeft;
+    // 快速移动的Coroutine
     IEnumerator quickMoveCor;
 
+    // 磁铁效果持续时间
     float magnetDuration = 15;
+    // 磁铁效果剩余时间
     public float magnetTimeLeft;
+    // 磁铁效果的Coroutine
     IEnumerator magnetCor;
+    // 磁铁碰撞器游戏对象
     public GameObject MagnetCollider;
 
+    // 鞋子效果持续时间
     float shoeDuration = 10;
+    // 鞋子效果剩余时间
     public float shoeTimeLeft;
+    // 鞋子效果的Coroutine
     IEnumerator shoeCor;
-
+    // 多倍金币效果持续时间
     float multiplyDuration = 10;
+    // 多倍金币效果剩余时间
     public float multiplyTimeLeft;
+    // 定义一个IEnumerator类型的变量，用于存储乘数效果的协程
     IEnumerator multiplyCor;
 
+    // 注释掉的Text对象，原用于显示状态信息
     //public Text statusText;
+    // 公有Text对象，用于显示磁铁相关的文本信息
     public Text Text_Magnet;
+    // 公有Text对象，用于显示鞋子相关的文本信息
     public Text Text_Shoe;
+    // 公有Text对象，用于显示星星相关的文本信息
     public Text Text_Star;
+    // 公有Text对象，用于显示乘数相关的文本信息
     public Text Text_Multiply;
 
+    // 公有GameObject对象，用于道路1的显示控制
     public GameObject road1;
+    // 公有GameObject对象，用于道路2的显示控制
     public GameObject road2;
+    // 公有GameObject对象，用于起点1的显示控制
     public GameObject start1;
+    // 公有GameObject对象，用于起点2的显示控制
     public GameObject start2;
 
+    // 私有浮点型变量，用于控制速度增加的距离
     private float speedAddDistance = 300;
+    // 私有浮点型变量，用于控制速度增加的速率
     private float speedAddRate = 0.5f;
+    // 私有浮点型变量，用于记录速度增加的次数
     private float speedAddCount = 0;
 
+    // 私有Animation对象，用于动画控制
     private Animation animation;
 
+    // 静态的PlayerController实例，用于确保整个游戏只存在一个PlayerController实例
     public static PlayerController instance;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         instance = this;
         speed = init_speed;
         animation = GetComponent<Animation>();
         characterController = GetComponent<CharacterController>();
         standPosition = Position.Middle;
         StartCoroutine(UpdateAction());
-	}
+    }
 
     public void Play()
     {
@@ -125,20 +172,20 @@ public class PlayerController : MonoBehaviour {
 
     void MoveForward()
     {
-        if(inputDirection == InputDirection.Down)
+        if (inputDirection == InputDirection.Down)
         {
             AnimationManager.instance.animationHandler = AnimationManager.instance.PlayRoll;
         }
-        if(characterController.isGrounded)
+        if (characterController.isGrounded)
         {
             moveDirection = Vector3.zero;
-            if(AnimationManager.instance.animationHandler != AnimationManager.instance.PlayRoll &&
+            if (AnimationManager.instance.animationHandler != AnimationManager.instance.PlayRoll &&
                 AnimationManager.instance.animationHandler != AnimationManager.instance.PlayTurnLeft &&
                 AnimationManager.instance.animationHandler != AnimationManager.instance.PlayTurnRight)
             {
                 AnimationManager.instance.animationHandler = AnimationManager.instance.PlayRun;
             }
-            if(inputDirection == InputDirection.Up)
+            if (inputDirection == InputDirection.Up)
             {
                 JumpUp();
                 if (canDoubleJump)
@@ -147,20 +194,20 @@ public class PlayerController : MonoBehaviour {
         }
         else
         {
-            if(inputDirection == InputDirection.Down)
+            if (inputDirection == InputDirection.Down)
             {
                 QuickGround();
             }
-            if(inputDirection == InputDirection.Up)
+            if (inputDirection == InputDirection.Up)
             {
-                if(doubleJump)
+                if (doubleJump)
                 {
                     JumpDouble();
                     doubleJump = false;
                 }
             }
 
-            if(AnimationManager.instance.animationHandler != AnimationManager.instance.PlayJumpUp
+            if (AnimationManager.instance.animationHandler != AnimationManager.instance.PlayJumpUp
                 && AnimationManager.instance.animationHandler != AnimationManager.instance.PlayRoll
                 && AnimationManager.instance.animationHandler != AnimationManager.instance.PlayDoubleJump)
             {
@@ -204,7 +251,7 @@ public class PlayerController : MonoBehaviour {
         FloorSetter.instance.floorForward = newRoad2;
     }
 
-    private GameObject Respawn(string name,GameObject prefab,Vector3 location)
+    private GameObject Respawn(string name, GameObject prefab, Vector3 location)
     {
         var old = GameObject.Find(name);
         if (old != null)
@@ -244,12 +291,12 @@ public class PlayerController : MonoBehaviour {
 
             xDirection = Vector3.left;
 
-            if(standPosition ==  Position.Middle)
+            if (standPosition == Position.Middle)
             {
                 standPosition = Position.Left;
                 fromPosition = Position.Middle;
             }
-            else if(standPosition == Position.Right)
+            else if (standPosition == Position.Right)
             {
                 standPosition = Position.Middle;
                 fromPosition = Position.Right;
@@ -285,12 +332,12 @@ public class PlayerController : MonoBehaviour {
         {
             MoveLeft();
         }
-        else if(inputDirection == InputDirection.Right)
+        else if (inputDirection == InputDirection.Right)
         {
             MoveRight();
         }
 
-        if(standPosition ==  Position.Left)
+        if (standPosition == Position.Left)
         {
             if (transform.position.x <= -1.7f)
             {
@@ -298,7 +345,7 @@ public class PlayerController : MonoBehaviour {
                 transform.position = new Vector3(-1.7f, transform.position.y, transform.position.z);
             }
         }
-        if(standPosition == Position.Middle)
+        if (standPosition == Position.Middle)
         {
             if (fromPosition == Position.Left)
             {
@@ -308,7 +355,7 @@ public class PlayerController : MonoBehaviour {
                     transform.position = new Vector3(0, transform.position.y, transform.position.z);
                 }
             }
-            else if(fromPosition == Position.Right)
+            else if (fromPosition == Position.Right)
             {
                 if (transform.position.x < 0)
                 {
@@ -318,7 +365,7 @@ public class PlayerController : MonoBehaviour {
             }
         }
 
-        if(standPosition == Position.Right)
+        if (standPosition == Position.Right)
         {
             if (transform.position.x >= 1.7f)
             {
@@ -389,7 +436,7 @@ public class PlayerController : MonoBehaviour {
     {
         multiplyTimeLeft = multiplyDuration;
         GameAttribute.instance.multiply = 2;
-        while(multiplyTimeLeft>=0)
+        while (multiplyTimeLeft >= 0)
         {
             if (CanPlay())
                 multiplyTimeLeft -= Time.deltaTime;
@@ -415,7 +462,7 @@ public class PlayerController : MonoBehaviour {
     {
         magnetTimeLeft = magnetDuration;
         MagnetCollider.SetActive(true);
-        while(magnetTimeLeft>=0)
+        while (magnetTimeLeft >= 0)
         {
             if (CanPlay())
                 magnetTimeLeft -= Time.deltaTime;
@@ -427,12 +474,12 @@ public class PlayerController : MonoBehaviour {
     IEnumerator QuickMoveCoroutine()
     {
         quickMoveTimeLeft = quickMoveDuration;
-        if(!isQuickMoving)
+        if (!isQuickMoving)
             saveSpeed = speed;
         speed = 20;
         isQuickMoving = true;
         //yield return new WaitForSeconds(quickMoveDuration);
-        while (quickMoveTimeLeft>=0)
+        while (quickMoveTimeLeft >= 0)
         {
             if (CanPlay())
                 quickMoveTimeLeft -= Time.deltaTime;
@@ -445,12 +492,12 @@ public class PlayerController : MonoBehaviour {
     void GetInputDirection()
     {
         inputDirection = InputDirection.NULL;
-        if(Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0))
         {
             activeInput = true;
             mousePos = Input.mousePosition;
         }
-        if(Input.GetMouseButton(0) && activeInput)
+        if (Input.GetMouseButton(0) && activeInput)
         {
             Vector3 vec = Input.mousePosition - mousePos;
             if (vec.magnitude > 20)
@@ -462,7 +509,7 @@ public class PlayerController : MonoBehaviour {
                     inputDirection = InputDirection.Up;
                     AudioManager.instance.PlaySlideAudio();
                 }
-                else if(angleY >=135)
+                else if (angleY >= 135)
                 {
                     inputDirection = InputDirection.Down;
                     AudioManager.instance.PlaySlideAudio();
@@ -472,7 +519,7 @@ public class PlayerController : MonoBehaviour {
                     inputDirection = InputDirection.Right;
                     AudioManager.instance.PlaySlideAudio();
                 }
-                else if(anglex>=135)
+                else if (anglex >= 135)
                 {
                     inputDirection = InputDirection.Left;
                     AudioManager.instance.PlaySlideAudio();
@@ -482,15 +529,16 @@ public class PlayerController : MonoBehaviour {
             }
         }
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update()
+    {
         //transform.Translate(new Vector3(0, 0, speed * Time.deltaTime));
 
 
         //statusText.text = GetTime(multiplyTimeLeft);
         UpdateItemTime();
-	}
+    }
 
     private void UpdateItemTime()
     {
@@ -505,7 +553,7 @@ public class PlayerController : MonoBehaviour {
         if (time <= 0)
             return "";
         //return Mathf.RoundToInt(time).ToString();
-        return ((int)time + 1).ToString()+"s";
+        return ((int)time + 1).ToString() + "s";
     }
 }
 
