@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// 双倍道具
+/// </summary>
 public class Multiply : Item
 {
 

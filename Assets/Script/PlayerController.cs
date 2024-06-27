@@ -395,6 +395,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 冲刺道具效果——冲刺方法调用
+    /// </summary>
     public void QuickMove()
     {
         if (quickMoveCor != null)
@@ -403,6 +406,9 @@ public class PlayerController : MonoBehaviour
         StartCoroutine(quickMoveCor);
     }
 
+    /// <summary>
+    /// 磁铁道具效果——磁吸方法调用
+    /// </summary>
     public void UseMagnet()
     {
         if (magnetCor != null)
@@ -411,6 +417,9 @@ public class PlayerController : MonoBehaviour
         StartCoroutine(magnetCor);
     }
 
+    /// <summary>
+    /// 连跳道具效果——连跳方法调用
+    /// </summary>
     public void UseShoe()
     {
         if (shoeCor != null)
@@ -419,6 +428,9 @@ public class PlayerController : MonoBehaviour
         StartCoroutine(shoeCor);
     }
 
+    /// <summary>
+    /// 双倍道具效果——双倍方法调用
+    /// </summary>
     public void Multiply()
     {
         if (multiplyCor != null)
@@ -432,6 +444,10 @@ public class PlayerController : MonoBehaviour
         return !GameController.instance.isPause && GameController.instance.isPlay;
     }
 
+    /// <summary>
+    /// 双倍效果协程
+    /// </summary>
+    /// <returns>协程</returns>
     IEnumerator MultiplyCoroutine()
     {
         multiplyTimeLeft = multiplyDuration;
@@ -445,6 +461,10 @@ public class PlayerController : MonoBehaviour
         GameAttribute.instance.multiply = 1;
     }
 
+    /// <summary>
+    /// 连跳效果协程
+    /// </summary>
+    /// <returns>协程</returns>
     IEnumerator ShoeCoroutine()
     {
         shoeTimeLeft = shoeDuration;
@@ -458,6 +478,10 @@ public class PlayerController : MonoBehaviour
         PlayerController.instance.canDoubleJump = false;
     }
 
+    /// <summary>
+    /// 磁铁效果协程
+    /// </summary>
+    /// <returns><协程/returns>
     IEnumerator MagnetCoroutine()
     {
         magnetTimeLeft = magnetDuration;
@@ -471,6 +495,10 @@ public class PlayerController : MonoBehaviour
         MagnetCollider.SetActive(false);
     }
 
+    /// <summary>
+    /// 冲刺效果协程
+    /// </summary>
+    /// <returns>协程</returns>
     IEnumerator QuickMoveCoroutine()
     {
         quickMoveTimeLeft = quickMoveDuration;
@@ -489,6 +517,9 @@ public class PlayerController : MonoBehaviour
         isQuickMoving = false;
     }
 
+    /// <summary>
+    /// 获取输入方向
+    /// </summary>
     void GetInputDirection()
     {
         inputDirection = InputDirection.NULL;

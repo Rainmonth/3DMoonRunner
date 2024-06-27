@@ -1,6 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// 道具基类，道具通用属性有：
+/// 1. 旋转速度
+/// 2. 碰撞效果
+/// 3. 与玩家碰撞后，使用相应的道具效果
+/// </summary>
 public class Item : MonoBehaviour {
 
     public float rotateSpeed = 1;
@@ -18,6 +24,9 @@ public class Item : MonoBehaviour {
         transform.Rotate(0, rotateSpeed * Time.deltaTime, 0);
     }
 
+    /// <summary>
+    /// 道具碰撞执行方法
+    /// </summary>
     public virtual void HitItem()
     {
         PlayHitAudio();
@@ -28,6 +37,9 @@ public class Item : MonoBehaviour {
         Destroy(gameObject);
     }
 
+    /// <summary>
+    /// 播放道具被碰撞的音效
+    /// </summary>
     public virtual void PlayHitAudio()
     {
         AudioManager.instance.PlayGetItemAudio();

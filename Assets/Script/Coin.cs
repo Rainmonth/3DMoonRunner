@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// 金币道具
+/// </summary>
 public class Coin : Item {
 
     //public override void OnTriggerEnter(Collider other)
