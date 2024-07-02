@@ -47,6 +47,7 @@ public class Item : MonoBehaviour {
 
     public virtual void OnTriggerEnter(Collider other)
     {
+        Debug.Log("Item OnTriggerEnter, tag:" + other.tag);
         if (other.tag == "Player")
         {
             HitItem();

@@ -11,7 +11,7 @@ public class GameController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         instance = this;
-        isPause = true;
+        isPause = false;
         isPlay = true;
 	}
 

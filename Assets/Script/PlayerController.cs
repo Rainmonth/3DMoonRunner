@@ -68,7 +68,7 @@ public class PlayerController : MonoBehaviour
     float multiplyDuration = 10;
     // 多倍金币效果剩余时间
     public float multiplyTimeLeft;
-    // 定义一个IEnumerator类型的变量，用于存储乘数效果的协程
+    // 定义一个IEnumerator类型的变量，用于存储双倍效果的协程
     IEnumerator multiplyCor;
 
     // 注释掉的Text对象，原用于显示状态信息
@@ -132,6 +132,8 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator UpdateAction()
     {
+        Debug.Log("UpdateAction, isPlay:" + GameController.instance.isPlay +
+        ", isPause:" + GameController.instance.isPause + ", life:" + GameAttribute.instance.life);
         while (GameAttribute.instance.life > 0)
         {
             if (GameController.instance.isPlay && !GameController.instance.isPause)
@@ -172,6 +174,7 @@ public class PlayerController : MonoBehaviour
 
     void MoveForward()
     {
+        Debug.Log("MoveForward, direction:" + inputDirection + ", isGrounded:" + characterController.isGrounded);
         if (inputDirection == InputDirection.Down)
         {
             AnimationManager.instance.animationHandler = AnimationManager.instance.PlayRoll;
@@ -251,6 +254,13 @@ public class PlayerController : MonoBehaviour
         FloorSetter.instance.floorForward = newRoad2;
     }
 
+    /// <summary>
+    /// 重新生成预制件对象
+    /// </summary>
+    /// <param name="name">预制件名称</param>
+    /// <param name="prefab">预制件对象</param>
+    /// <param name="location">预制件生成位置</param>
+    /// <returns>新生成的预制件对象</returns>
     private GameObject Respawn(string name, GameObject prefab, Vector3 location)
     {
         var old = GameObject.Find(name);
@@ -588,6 +598,9 @@ public class PlayerController : MonoBehaviour
     }
 }
 
+/// <summary>
+/// 输入的方向，左滑、右滑，上滑、下滑
+/// </summary>
 public enum InputDirection
 {
     NULL,
@@ -596,7 +609,9 @@ public enum InputDirection
     Up,
     Down
 }
-
+/// <summary>
+/// 跑酷轨道上的左、中、右三个位置
+/// </summary>
 public enum Position
 {
     Left,

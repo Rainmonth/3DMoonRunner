@@ -35,10 +35,11 @@ public class FloorSetter : MonoBehaviour
     /// <param name="floor">要移除物品的地板GameObject。</param>
     void RemoveItem(GameObject floor)
     {
-        // 查找地板上的“Item”子对象。
+        // 找到地板上 名字为 Item 的 GameObject 对象，
         var item = floor.transform.Find("Item");
         if (item != null)
         {
+            Debug.Log("item size:" + item.childCount);
             // 遍历“Item”下的所有子对象并销毁它们。
             foreach (var child in item)
             {
@@ -57,7 +58,7 @@ public class FloorSetter : MonoBehaviour
     /// <param name="floor">要添加物品的地板GameObject。</param>
     void AddItem(GameObject floor)
     {
-        // 查找地板上的“Item”子对象。
+        // 找到地板上 名字为 Item 的 GameObject 对象，
         var item = floor.transform.Find("Item");
         if (item != null)
         {
@@ -67,6 +68,7 @@ public class FloorSetter : MonoBehaviour
             {
                 // 随机选择一个模式。
                 var pattern = patternManager.Patterns[Random.Range(0, patternManager.Patterns.Count)];
+                // 将 pattern 列表中的 物品添加到 “Item”下。
                 if (pattern != null && pattern.PatternItems != null && pattern.PatternItems.Count > 0)
                 {
                     // 遍历模式中的每个物品，克隆并放置到地板上。

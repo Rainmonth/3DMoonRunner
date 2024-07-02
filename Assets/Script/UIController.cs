@@ -2,7 +2,7 @@
 using System.Collections;
 
 /// <summary>
-/// UI 界面控制器，祝哟啊管理游戏开始、游戏恢复、游戏重新开始、游戏暂停是 的UI显示状态。
+/// UI 界面控制器，主要管理游戏开始、游戏恢复、游戏重新开始、游戏暂停是 的UI显示状态。
 /// </summary>
 public class UIController : MonoBehaviour {
 
