@@ -44,6 +44,8 @@
     - Animation 动画的使用；
     - Animation 和 Animator 的区别；
 
+> Animation 组件可以直接作用于 GameObject，使用时，在Inspector视图中指定配置支持的动画列表，并设置默认的播放的动画，以及动画的播放设置。
+> Animator 组件，需要将动画添加到 AnimatorController 中，然后通过 AnimatorController 来控制动画的播放。AnimatorController 是一个控制器，里面有一个动画状态机，它包含多个动画，每个动画包含多个状态，每个状态包含多个动画片段。
 
 > 两个FBX文件，一个有模型，一个有动画，如果需要采用动画，需要将将两个FBX文件同时拖入场景中。
 
@@ -51,6 +53,8 @@
     - 搞清楚为什么 OnTriggerEnter 没有生效；(问题原因：用来进行碰撞比较的Player 的tag 没有正确设置)
 
 4. 完成游戏UI的实现
+
+- 当为Button添加 OnClick 处理时，添加的脚本没有可以选择执行的函数；（问题原因：没有将处理的脚本（或者包含处理脚本组件的GameObject 添加到指定位置）
 
 5. 角色动画播放异常，不流畅
 

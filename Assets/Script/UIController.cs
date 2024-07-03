@@ -15,30 +15,6 @@ public class UIController : MonoBehaviour {
 
     public Canvas canvas;
 
-    public void HidePlayUI()
-    {
-        iTween.MoveTo(PlayUI, canvas.transform.position + new Vector3(-Screen.width / 2 - 500, 0, 0), 1.0f);
-    }
-
-    public void ShowPauseUI()
-    {
-        iTween.MoveTo(PauseUI, canvas.transform.position + new Vector3(-Screen.width / 2, -Screen.height / 2, 0), 1.0f);
-    }
-
-    public void ShowResumeUI()
-    {
-        iTween.MoveTo(ResumeUI, canvas.transform.position + Vector3.zero, 1.0f);
-    }
-
-    public void HidePauseUI()
-    {
-        iTween.MoveTo(PauseUI, canvas.transform.position + new Vector3(-Screen.width / 2 - 500, -Screen.height / 2, 0), 1.0f);
-    }
-
-    public void HideResumeUI()
-    {
-        iTween.MoveTo(ResumeUI, canvas.transform.position + new Vector3(-Screen.width / 2 - 500, 0, 0), 1.0f);
-    }
 
     public void PlayHandler()
     {
@@ -56,15 +32,6 @@ public class UIController : MonoBehaviour {
         GameController.instance.Pause();
     }
 
-    public void ShowRestartUI()
-    {
-        iTween.MoveTo(RestartUI, canvas.transform.position + Vector3.zero, 1.0f);
-    }
-
-    public void HideRestartUI()
-    {
-        iTween.MoveTo(RestartUI, canvas.transform.position + new Vector3(-Screen.width / 2 - 500, 0, 0), 1.0f);
-    }
 
     public void ResumeHandler()
     {
@@ -86,6 +53,43 @@ public class UIController : MonoBehaviour {
     {
         AudioManager.instance.PlayButtonAudio();
         GameController.instance.Exit();
+    }
+
+    public void ShowRestartUI()
+    {
+        iTween.MoveTo(RestartUI, canvas.transform.position + Vector3.zero, 1.0f);
+    }
+
+    public void HideRestartUI()
+    {
+        iTween.MoveTo(RestartUI, canvas.transform.position + new Vector3(-Screen.width / 2 - 500, 0, 0), 1.0f);
+    }
+
+
+    public void HidePlayUI()
+    {
+        iTween.MoveTo(PlayUI, canvas.transform.position + new Vector3(-Screen.width / 2 - 500, 0, 0), 1.0f);
+    }
+
+    public void ShowPauseUI()
+    {
+        iTween.MoveTo(PauseUI, canvas.transform.position + new Vector3(-Screen.width / 2, -Screen.height / 2, 0), 1.0f);
+    }
+
+    public void ShowResumeUI()
+    {
+        iTween.MoveTo(ResumeUI, canvas.transform.position + Vector3.zero, 1.0f);
+    }
+
+    public void HidePauseUI()
+    {
+        // iTween.MoveTo(PauseUI, canvas.transform.position + new Vector3(-Screen.width / 2 - 500, -Screen.height / 2, 0), 1.0f);
+        iTween.FadeTo(PauseUI, 0, 0.5f);
+    }
+
+    public void HideResumeUI()
+    {
+        iTween.MoveTo(ResumeUI, canvas.transform.position + new Vector3(-Screen.width / 2 - 500, 0, 0), 1.0f);
     }
 
 	// Use this for initialization

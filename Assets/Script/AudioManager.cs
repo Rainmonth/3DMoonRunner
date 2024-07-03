@@ -12,7 +12,7 @@ public class AudioManager : MonoBehaviour {
 
     public static AudioManager instance;
 
-    public Sprite soundOnSprite;
+    public Sprite soundOnSprite; 
     public Sprite soundOffSprite;
 
     public Image soundImage;
